@@ -24,6 +24,11 @@ Baseado nas aulas práticas do [repositório oficial da matéria](https://github
 | `06-snippets-prontos.py` | Todos os snippets acima em um único arquivo Python, prontos para copiar |
 | `07-prova-2025-resolvida.md` | Prova A1 de 2025.2 com gabarito completo (questões 1 a 3) |
 | `08-frases-de-interpretacao.md` | Banco de frases para interpretar resultados (a professora sempre pede interpretação) |
+| `09-teoria-analise-bivariada.md` | **Teoria** por trás da análise bivariada — o que cada técnica realmente significa, armadilhas (causalidade, não-linearidade, atípicos), e como estruturar a resposta escrita. Leia esse **antes** da prova se bivariada é seu ponto fraco. |
+
+## Se a teoria (não só o código) é seu ponto fraco
+
+`09-teoria-analise-bivariada.md` foi feito justamente pra isso: ele explica o "porquê" de cada técnica de bivariada (tabela de dupla entrada, correlação de Pearson, boxplots comparativos), lista as armadilhas mais cobradas (correlação ≠ causalidade, Pearson só pega relação linear, sensibilidade a atípicos) e dá um roteiro de como estruturar a resposta escrita — pra você não travar na hora de redigir a interpretação.
 
 ## Setup rápido (Colab)
 
