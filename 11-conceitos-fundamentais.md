@@ -95,3 +95,26 @@ A distribuição é assimétrica **para o lado da cauda** (o "rabo" comprido), n
 
 - **Assimétrica à direita**: pico à esquerda, cauda se estende à direita. Média **>** mediana. Típico de **renda** (muita gente ganhando pouco, poucos ganhando muito).
 - **Assimétrica à esquerda**: pico à direita, cauda à esquerda. Média **<** mediana. Típico de **notas de prova fácil** (quase todo mundo tira nota alta, poucos tiram muito baixa).
+
+## 10. Indicadores
+
+Um **indicador** é uma variável construída para representar um conceito que não se mede diretamente. Ninguém mede "desenvolvimento" com uma régua — constrói-se o IDH. Ninguém mede "qualidade da educação básica" — constrói-se o Ideb.
+
+É o elo entre a primeira linha da lista de conceitos da professora ("**do conceito à variável**") e a prática: escolher um indicador é uma **decisão metodológica**, e toda escolha embute um recorte.
+
+**Três coisas para observar em qualquer indicador:**
+
+1. **Normalização** — indicadores quase sempre são relativos a alguma base, para permitir comparação justa:
+   - *per capita* (÷ população): CO2 por pessoa, renda per capita
+   - *por mil / por 100 mil*: mortalidade infantil por mil nascidos vivos, médicos por 100 mil habitantes
+   - *percentual*: taxa de analfabetismo, % de nascidos fora
+
+   > É por isso que a questão do CO2 pergunta "por que medir por pessoa e não o total?". Total confunde **tamanho da população** com **intensidade do fenômeno**: a China emite muito no total por ter muita gente, não por cada chinês emitir muito. É a mesma lógica de usar percentual em vez de contagem ao comparar grupos de tamanhos diferentes.
+
+2. **Composição** — indicadores compostos juntam várias dimensões num número só (o Ideb combina fluxo escolar + desempenho em testes; o IDH combina renda, educação e longevidade). Ganha-se síntese, **perde-se informação**: dois territórios com o mesmo índice podem ter perfis completamente diferentes.
+
+3. **Direção da escala** — nem todo indicador "quanto maior, melhor". Mortalidade infantil e taxa de analfabetismo são **quanto menor, melhor**. Um *posto* (ranking) inverte de novo: posto 1 é o melhor, então valor **menor** = melhor.
+
+   > ⚠️ Errar isso inverte a conclusão inteira de uma análise bivariada. Antes de interpretar uma correlação entre indicadores, escreva explicitamente para que lado cada escala aponta.
+
+**Indicador não é a realidade.** É uma escolha de como representá-la — e, num curso de Comunicação, vale lembrar que essa escolha é também uma escolha editorial sobre o que fica visível.

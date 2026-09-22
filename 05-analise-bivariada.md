@@ -16,6 +16,24 @@ tabela_long = df.groupby(['var1', 'var2']).size()
 tabela_long = pd.pivot_table(df, index=['var1', 'var2'], aggfunc='size')
 ```
 
+### Distribuição marginal vs. condicional (os dois nomes são cobrados)
+
+- **Distribuição marginal** = a distribuição de **uma só** das variáveis, ignorando a outra. São os **totais nas margens** da tabela (daí o nome) — a última linha e a última coluna.
+- **Distribuição condicional** = a distribuição de uma variável **dentro de cada categoria** da outra. É ela que responde se há associação.
+
+```python
+tabela = df.groupby(['var1', 'var2']).size().unstack(1)
+
+# marginais: os totais das margens
+marginal_var1 = tabela.sum(axis=1)          # total de cada categoria de var1
+marginal_var2 = tabela.sum(axis=0)          # total de cada categoria de var2
+
+# marginais em percentual
+marginal_var1_pct = (marginal_var1 / marginal_var1.sum() * 100).round(1)
+```
+
+**Como usar cada uma na resposta:** a marginal descreve o perfil geral da amostra ("60% dos respondentes são do grupo A"); a condicional é que revela **associação** ("entre os do grupo A, 80% têm X, contra 30% entre os do grupo B").
+
 ### Distribuição condicional (percentual em relação a UMA das variáveis)
 
 ```python
@@ -70,6 +88,21 @@ df[['var1', 'var2']].corr(numeric_only=True)
 df.drop([indice_do_atipico])[['var1', 'var2']].corr(numeric_only=True)
 ```
 
+### Incluindo uma terceira variável qualitativa no diagrama
+
+Colorir os pontos por uma variável categórica mostra **três variáveis num gráfico só** — e às vezes revela que a relação é diferente dentro de cada grupo. É o que o caso Shipman faz (ano da morte × idade, colorido por gênero).
+
+```python
+alt.Chart(df).mark_circle(size=60).encode(
+    x='var1:Q',
+    y='var2:Q',
+    color='categoria:N',          # <- a terceira variável, qualitativa
+    tooltip=['var1', 'var2', 'categoria']
+)
+```
+
+> **Frase-modelo:** "Ao colorir os pontos por [categoria], nota-se que [grupo] se concentra em [região do gráfico], sugerindo que a relação entre [var1] e [var2] se comporta de forma diferente entre os grupos."
+
 ### Lendo o coeficiente de Pearson
 
 | Valor de r | Interpretação |
@@ -78,9 +111,18 @@ df.drop([indice_do_atipico])[['var1', 'var2']].corr(numeric_only=True)
 | perto de **-1** | relação linear negativa forte (quando um sobe, o outro desce) |
 | perto de **0** | pouca ou nenhuma relação **linear** (mas pode haver relação não linear — ver Datasaurus Dozen: `r≈0` não significa ausência de padrão!) |
 
-### Interpretação (modelo)
+### Interpretação — os 3 itens do "padrão geral" + o desvio
 
-> "O diagrama de dispersão mostra uma relação linear [positiva/negativa] entre [var1] e [var2], confirmada pelo coeficiente de Pearson de [valor], que indica uma associação de intensidade [fraca/moderada/forte]. [Se houver atípico:] Ao removermos o valor atípico de [observação], o coeficiente [aumenta/diminui] para [valor], mostrando que o outlier estava [atenuando/inflando] a relação."
+A professora pede a leitura da dispersão por **direção, forma e intensidade** (padrão geral) mais o **desvio**:
+
+| Item | O que responder |
+|---|---|
+| **Direção** | positiva (sobe junto) ou negativa (um sobe, outro desce) |
+| **Forma** | **linear** ou **não linear** (curva) — é o item que mais se esquece |
+| **Intensidade** | fraca, moderada ou forte (o quão perto os pontos estão de uma reta) |
+| **Desvio** | pontos fora do padrão geral (atípicos) |
+
+> "O diagrama de dispersão mostra uma relação **linear** e **negativa** entre [var1] e [var2], de intensidade **forte**, confirmada pelo coeficiente de Pearson de [valor]. [Se houver atípico:] Ao removermos o valor atípico de [observação], o coeficiente [aumenta/diminui] para [valor], mostrando que o ponto estava [atenuando/inflando] a relação."
 
 ---
 

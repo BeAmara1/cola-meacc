@@ -4,6 +4,8 @@ As 14 questões da aula de revisão da professora (`aulas_praticas/15-revisao/Re
 
 Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositório da matéria.
 
+> 🔴 **Antes de usar este arquivo, leia o alerta do `15-catalogo-das-bases.md`:** as bases da revisão **não são as mesmas** das aulas, mesmo tratando do mesmo assunto — têm outros nomes de coluna e **outros valores**. Copiar a resposta da aula para a revisão dá resposta errada. Todos os números abaixo foram conferidos rodando as bases **da revisão**.
+
 ---
 
 ### Q1 — Classificar variáveis
@@ -19,9 +21,10 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > (a) Quem eram as observações originais? (b) Verifique a consistência. (c) Gráficos + interpretação.
 
 **Cobra:** unidade de análise + checagem de consistência de percentuais + gráfico de qualitativa.
+**Colunas reais:** `Disciplina`, `Percentual` (10 linhas).
 **Roteiro:**
 - (a) **Os estudantes** — a tabela está agregada por área, mas quem gerou o dado foi cada calouro. (Ver `11-conceitos-fundamentais.md` §1.)
-- (b) `df.Percent.sum()` → tem que dar 100. Se não der, é arredondamento ou falta a categoria "Outras".
+- (b) Conferido: a soma dá **99,9**, não 100 → é **erro de arredondamento** (a categoria "Outra" já existe na base, então não é caso de categoria faltante).
 - (c) Barras ordenadas (`sort='-y'`). Setores só se somar 100% e houver poucas categorias.
 
 **Ver:** `02-analise-univariada-qualitativa.md`
@@ -32,8 +35,9 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > (a) Soma dos níveis de audiência; qual % ouve outros formatos. (b) Seria correto usar gráfico de setores? (c) Barras incluindo "Outro formato".
 
 **Cobra:** exatamente a pegadinha do gráfico de setores.
+**Colunas reais:** `Formato`, `NivelAudiencia` (12 linhas).
 **Roteiro:**
-- (a) `df.Percentage.sum()` e depois `100 - soma` = o que sobra para "Outros".
+- (a) Conferido: a soma dá **67,3** → **32,7%** da audiência ouve outros formatos.
 - (b) **Não, não do jeito que está** — setores exige partes de um todo (soma 100%). Como a tabela só traz os formatos mais populares, falta a fatia "Outros". *Depois* de acrescentar "Outro formato", aí sim somaria 100% e o setor seria defensável (ainda assim, barras comunicam melhor com muitas categorias).
 - (c) Acrescente a linha "Outras" e plote barras.
 
@@ -47,8 +51,8 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 **Cobra:** histograma com bin controlado + resumo dos 5 números + regra do atípico.
 **Roteiro:**
 - (a) `bin=alt.Bin(step=5, extent=[0, 30])`
-- (b) Resumo dos 5 números = **mín, Q1, mediana, Q3, máx** → sai do `describe()`
-- (c) Calcule `AIQ = Q3 - Q1`, depois `Q3 + 1.5*AIQ`. Se 27,2 (Califórnia) estiver acima desse limite → atípico; se não, é **só a maior observação**. Escreva a conta na resposta.
+- (b) Resumo dos 5 números conferido: **mín 1,2 · Q1 3,8 · mediana 6,3 · Q3 12,5 · máx 27,2**
+- (c) AIQ = 12,5 − 3,8 = **8,7** → limite superior = 12,5 + 1,5×8,7 = **25,55**. Como Califórnia = **27,2 > 25,55**, ela **é** um valor atípico (não é apenas a maior observação). Mostre essa conta na resposta.
 
 **Ver:** `03-histogramas-e-series-temporais.md` e `04-medidas-descritivas.md`
 
@@ -72,11 +76,13 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > (a) Por que medir por pessoa e não total? (b) Histograma: forma, centro, dispersão. (c) Atípicos. (d) Média e mediana — por que diferem?
 
 **Cobra:** normalização de indicador + descrição completa de distribuição.
+**Colunas reais:** `País`, `CO2` — **39 países** (só os com população ≥ 30 milhões).
 **Roteiro:**
 - (a) Porque **total confunde tamanho populacional com intensidade de emissão** — China e Índia emitem muito no total por terem muita gente. Per capita permite comparar países de tamanhos diferentes (mesma lógica de usar percentual em vez de contagem).
-- (b) Assimétrica à direita, unimodal
-- (c) Qatar é o caso extremo clássico dessa base — confirme pela regra 1,5×AIQ
-- (d) Média > mediana **porque** a cauda à direita (poucos países com emissão altíssima) puxa a média, e a média não é resistente
+- (b) Assimétrica à direita, unimodal. Conferido: média **4,61** · mediana **3,95** · mín 0,03 · máx 18,91
+- (c) AIQ = 7,20 → limite superior **18,73**. Único atípico: **Estados Unidos (18,91)**. Top 5: EUA · Canadá (16,92) · Rússia (10,83) · Coreia do Sul (10,49) · Japão (9,85).
+  > ⚠️ **Não responda "Qatar".** Qatar é o extremo da base *da aula* (`ex02-05co2emiss.xls`, 203 países) — ele nem aparece nesta base da revisão.
+- (d) Média > mediana **porque** a cauda à direita (poucos países com emissão alta) puxa a média, e a média não é resistente
 
 ---
 
@@ -84,12 +90,28 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > Análise completa: média, moda, mediana, quartis, boxplot, atípicos + comparação entre as duas bases.
 
 **Cobra:** a questão "kitchen sink" de medidas descritivas + comparação de grupos.
+**Coluna real nas duas bases:** `Minutos` (em português — nas bases da aula é `Minutes`).
 **Roteiro:**
 1. `describe()` nas duas
 2. Moda via `value_counts()` (atenção: pode ser **plurimodal**)
 3. AIQ e regra 1,5×AIQ em cada uma
 4. **Junte as duas bases** (`concat` com uma coluna de origem) e faça **boxplots lado a lado** — é isso que permite a comparação
 5. Interprete: quem tem mediana maior, quem tem mais dispersão, quem tem atípico
+
+**Valores conferidos nas bases da revisão:**
+
+| | Carolina do Norte (n=15) | Nova York (n=20) |
+|---|---|---|
+| média | 22,47 | 31,25 |
+| mediana | 20,0 | 22,5 |
+| moda | 10 | 15 |
+| desvio padrão | 15,23 | 21,88 |
+| Q1 / Q3 | 10 / 30 | 15 / 41,25 |
+| AIQ | 20,0 | 26,25 |
+| mín / máx | 5 / 60 | 5 / 85 |
+| atípicos | **nenhum** | **85** |
+
+> ⚠️ Na base **da aula**, Carolina do Norte tem o 70 como atípico — o notebook inteiro gira em torno disso. Na base **da revisão** não há atípico em CN, e quem tem atípico é NY. Não reaproveite a conclusão da aula.
 
 **Ver:** `04-medidas-descritivas.md` (seção de boxplots lado a lado)
 
@@ -99,10 +121,13 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > (a) Dispersão de BRFSS (resposta) contra posto (explicativa). (b) Associação positiva ou negativa? (c) Concordância entre medida subjetiva e objetiva? (d) Atípicos?
 
 **Cobra:** bivariada quantitativa + **atenção à direção da escala**.
+**Colunas reais:** `Estado`, `BRFSS`, `CompDif` (50 linhas).
 **Roteiro:**
-- (a) Explicativa (posto) no **x**, resposta (BRFSS) no **y** — a questão diz explicitamente
-- (b) Calcule Pearson e olhe o gráfico
-- (c) ⚠️ **Pegadinha**: no enunciado, *menores* escores BRFSS indicam **maior** felicidade, e posto 1 é o **mais feliz**. Ou seja, as duas escalas são "invertidas" em relação à intuição. Uma associação **positiva** aqui significa **concordância** entre as medidas. Leia a direção das escalas antes de concluir.
+- (a) Explicativa (`CompDif`, o posto) no **x**, resposta (`BRFSS`) no **y** — a questão diz explicitamente
+- (b) Conferido: **r = −0,565** → relação linear **negativa**, intensidade **moderada**
+- (c) ⚠️ **Aqui está a pegadinha da lista.** No enunciado, *menor* BRFSS = mais feliz, e posto 1 = mais feliz. Então **concordância** entre as medidas produziria correlação **positiva**. Como deu **negativa**, as medidas **discordam**.
+  Confirmando nos extremos: os 10 estados de melhor posto objetivo têm BRFSS médio de **−0,009**, enquanto os 10 de pior posto têm **−0,065** — ou seja, os pior colocados objetivamente são os que **se declaram mais felizes**. (Postos 1-3: Wyoming, Dakota do Sul, Arkansas. Postos 48-50: Nova York, Michigan, Illinois.)
+  **Escreva a direção de cada escala antes de concluir** — sem isso, o mesmo sinal pode ser lido dos dois jeitos.
 - (d) Pontos fora da nuvem; nomeie o estado
 
 **Ver:** `05-analise-bivariada.md` e `09-teoria-analise-bivariada.md`
@@ -113,11 +138,29 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > Tabela de dupla entrada de tratamento (Chantix / bupropiona / placebo) × parou de fumar. "Como isso depende do tratamento recebido?"
 
 **Cobra:** bivariada qualitativa × qualitativa com **distribuição condicional**.
+**Colunas reais:** `Fumou`, `Tratamento`, `Contagem` — só **6 linhas**.
+**⚠️ Atenção ao formato:** a base já vem **agregada em formato long**, com a contagem numa coluna. `groupby(...).size()` **não funciona** aqui (contaria 6 linhas). Use `pivot`:
+
+```python
+cf = pd.read_excel('CESSAFUMO.xls')
+tab = cf.pivot(index='Tratamento', columns='Fumou', values='Contagem')
+tab['total'] = tab.sum(axis=1)
+tab['% parou'] = (tab['Não'] / tab['total'] * 100).round(1)
+```
+
+**Resultado conferido** (parar de fumar = `Fumou` é "Não"):
+
+| Tratamento | parou | continuou | total | **% que parou** |
+|---|---|---|---|---|
+| Chantix | 155 | 197 | 352 | **44,0%** |
+| Bupropiona | 97 | 232 | 329 | **29,5%** |
+| Placebo | 61 | 283 | 344 | **17,7%** |
+
 **Roteiro:**
 - Os grupos têm **tamanhos diferentes** (352, 329, 344) → comparar contagem bruta é errado, **use percentual**
-- A variável explicativa é o **tratamento** → condicione nele: dentro de cada tratamento, qual % parou de fumar
-- Gráfico: barras segmentadas com `stack="normalize"`
-- Conclua comparando os percentuais entre os três grupos
+- A explicativa é o **tratamento** → condicione nele
+- Gráfico: `alt.Chart(cf).mark_bar().encode(x=alt.X('sum(Contagem):Q', stack='normalize'), y='Tratamento:N', color='Fumou:N')`
+- Conclusão: Chantix (44%) mais que dobra a taxa do placebo (17,7%); bupropiona fica no meio (29,5%)
 - ⚠️ Aqui **é** um experimento aleatorizado, então falar em efeito do tratamento é mais defensável que em dado observacional — mas siga usando linguagem descritiva
 
 **Ver:** `05-analise-bivariada.md`
@@ -128,8 +171,10 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > (a) Análise unidimensional das duas variáveis (distribuição, média, dp, 5 números). (b) Análise bidimensional + interpretação.
 
 **Cobra:** univariada + bivariada na mesma questão (formato muito provável de cair).
+**Colunas reais:** `Estado`, `PctSAT`, `SAT-Mat` (⚠️ hífen no nome → use `df['SAT-Mat']`).
 **Roteiro:** histograma + `describe()` de cada uma; depois dispersão + Pearson.
-**A sacada interpretativa:** a relação costuma ser **negativa** — estados onde *mais* alunos fazem o SAT têm média *menor*. Não é que o SAT "piore"; é que quando poucos fazem, só os mais preparados fazem (**viés de seleção**). Esse raciocínio é o que a questão quer.
+**Resultado conferido: r = −0,866** → negativa **forte**.
+**A sacada interpretativa:** estados onde *mais* alunos fazem o SAT têm média *menor*. Não é que o SAT "piore"; é que quando poucos fazem, só os mais preparados fazem (**viés de seleção**). Esse raciocínio é o que a questão quer.
 
 ---
 
@@ -145,9 +190,26 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > (a) Classificar renda ≤ 5 salários como "baixa" e > 5 como "alta". (b) Há associação entre renda familiar e uso de programa de alimentação popular?
 
 **Cobra:** **criar variável qualitativa a partir de quantitativa** + tabela de dupla entrada.
+**Colunas reais:** `Nº`, `Local`, `P.a.p.`, `Instr.`, `Tam.`, `Renda` (120 linhas).
+**⚠️ Renomeie antes de plotar:** `P.a.p.`, `Instr.` e `Tam.` têm **ponto no nome** — o Altair interpreta ponto como campo aninhado e desenha **gráfico vazio sem dar erro**.
+
+```python
+inf = pd.read_csv('InfoFamiliasEntrevistadas.csv')
+inf = inf.rename(columns={'P.a.p.': 'Pap', 'Instr.': 'Instr', 'Tam.': 'Tam', 'Nº': 'N'})
+```
+
 **Roteiro:**
-- (a) `pd.cut(df['Renda'], bins=[0, 5, float('inf')], labels=['renda baixa', 'renda alta'])`
-- (b) Tabela de dupla entrada dessa nova variável × `P.a.p.`, com **distribuição condicional na renda** (dentro de cada faixa de renda, qual % usa o programa) + barras segmentadas normalizadas
+- (a) `inf['faixa_renda'] = pd.cut(inf['Renda'], bins=[0, 5, float('inf')], labels=['renda baixa', 'renda alta'])`
+- (b) Tabela de dupla entrada dessa nova variável × `Pap`, com **distribuição condicional na renda** + barras segmentadas normalizadas
+
+**Resultado conferido:**
+
+| Faixa de renda | não usa | **usa o programa** | total |
+|---|---|---|---|
+| renda baixa (≤ 5 SM) | 15 (27,3%) | 40 (**72,7%**) | 55 |
+| renda alta (> 5 SM) | 27 (41,5%) | 38 (**58,5%**) | 65 |
+
+**Sim, a amostra sugere associação:** entre as famílias de renda baixa, 72,7% usam o programa, contra 58,5% entre as de renda alta — 14 pontos percentuais de diferença, no sentido esperado.
 
 **Ver:** `05-analise-bivariada.md` (seção `pd.cut`)
 
@@ -157,7 +219,14 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > (a) Histograma do PIB. (b) Identifique o atípico. (c) Escolha 2 variáveis e faça univariada. (d) Bivariada dessas duas.
 
 **Cobra:** o pacote completo, com **liberdade de escolha** das variáveis.
-**Dica de prova:** escolha variáveis que provavelmente se relacionam (ex: gasto público em saúde × médicos por 100 mil; PIB × desigualdade) — assim você tem o que interpretar. Escolher duas variáveis sem relação nenhuma te deixa sem assunto na hora de escrever.
+**Colunas reais:** `nation`, `GDP`, `Unemploy`, `Inequal`, `Health`, `Phys`, `C02`, `Parlia`, `FemEcon` (23 países).
+
+**⚠️ Duas armadilhas conferidas nesta base:**
+1. A coluna **`Inequal` vem como TEXTO**, porque usa a letra `'I'` como marcador de ausente. Resultado: `df.corr()` **exclui ela silenciosamente** e `describe()` mostra `unique/top/freq`. Converta antes: `oc['Inequal'] = pd.to_numeric(oc['Inequal'], errors='coerce')`
+2. A coluna de CO2 se chama **`C02`** — com o número **zero**, não a letra O. É o nome real na base.
+
+- (b) O atípico do histograma de PIB é **Luxemburgo (69.961)**.
+- **Dica:** escolha variáveis que provavelmente se relacionam (ex: `Health` × `Phys`; `GDP` × `Inequal`) — assim você tem o que interpretar. Escolher duas variáveis sem relação te deixa sem assunto na hora de escrever.
 
 ---
 
@@ -165,9 +234,27 @@ Os arquivos de dados de cada questão estão na pasta `15-revisao/` do repositó
 > Análises bivariadas para cada par de variáveis.
 
 **Cobra:** bivariada em escala.
-**Roteiro:** `df.corr(numeric_only=True)` dá a **matriz de correlação** de todos os pares de uma vez. Use ela para escolher os pares mais fortes e só então faça os diagramas de dispersão desses. Interprete direção e força de cada um.
+**Colunas reais:** `Territorialidades`, `Esperança de vida ao nascer 2000`, `Mortalidade infantil 2000`, `Taxa de analfabetismo - 18 anos ou mais de idade 2000`, `Renda per capita 2000`.
 
-> Essa base é praticamente a mesma da **Questão 3 da prova de 2025** — vale conferir `07-prova-2025-resolvida.md`, que tem essa análise já resolvida com interpretação.
+**⚠️ São 28 linhas, não 27 — a primeira é "Brasil"**, o agregado do país, não um estado. Misturar o agregado com as unidades é erro de unidade de análise:
+```python
+ce = ce[ce.Territorialidades != 'Brasil']
+```
+
+**Roteiro:** `df.corr(numeric_only=True)` dá a **matriz de correlação** de todos os pares de uma vez. Use ela para escolher os pares mais fortes e só então faça os diagramas de dispersão desses.
+
+**Matriz conferida (sem a linha Brasil):**
+
+| | Esp. vida | Mort. infantil | Analfabet. | Renda |
+|---|---|---|---|---|
+| **Esperança de vida** | 1,000 | −0,886 | −0,856 | 0,852 |
+| **Mortalidade infantil** | −0,886 | 1,000 | **0,931** | −0,823 |
+| **Analfabetismo** | −0,856 | 0,931 | 1,000 | −0,831 |
+| **Renda per capita** | 0,852 | −0,823 | −0,831 | 1,000 |
+
+Todos os pares são fortes; o mais forte é **mortalidade infantil × analfabetismo (0,931)**.
+
+> Esta base é do Censo de **2000**; a prova de 2025 usou a de **2010** (e os nomes das colunas carregam o ano). A análise resolvida está em `07-prova-2025-resolvida.md`.
 
 ---
 

@@ -28,10 +28,15 @@ import altair as alt
 
 PASTA = os.path.dirname(os.path.abspath(__file__))
 
-# Arquivos que NÃO devem ser testados automaticamente:
-# - 07: documenta a prova real, então referencia bases reais (enem, censo...) que não existem aqui
-# - 10-como-usar: os exemplos chamam funções definidas no outro arquivo
-IGNORAR = ('07-prova-2025-resolvida.md', '10-como-usar-o-corretor.md')
+# Arquivos que NÃO devem ser testados automaticamente, porque documentam
+# as bases REAIS da matéria (que ficam na pasta do repositório da professora,
+# não aqui) ou chamam funções definidas em outro arquivo:
+IGNORAR = (
+    '07-prova-2025-resolvida.md',      # referencia enem, censo, clima...
+    '10-como-usar-o-corretor.md',      # chama checar(), definido no .py
+    '13-lista-de-revisao-resolvida.md',  # referencia CESSAFUMO.xls etc.
+    '15-catalogo-das-bases.md',          # idem
+)
 
 # Trechos que indicam código que só faz sentido dentro do Colab, ou que
 # referencia arquivo de exemplo inexistente — são pulados, não são falha.

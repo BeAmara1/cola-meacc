@@ -14,12 +14,14 @@ Baseado nas aulas práticas do [repositório oficial da matéria](https://github
 
 **Para estudar (na ordem):**
 
-1. `11-conceitos-fundamentais.md` — o vocabulário que sustenta tudo (unidade de análise, amostra, resistência, assimetria)
+0. `16-checklist-de-conceitos.md` — **comece aqui.** É a lista de conceitos da própria professora (o escopo da prova, escrito por quem faz a prova), recuperada de um arquivo que ela publicou e depois deletou do repositório
+1. `11-conceitos-fundamentais.md` — o vocabulário que sustenta tudo (unidade de análise, amostra, resistência, assimetria, indicadores)
 2. `01-tipos-de-variaveis.md` — classificar variáveis, que é o primeiro passo de toda questão
 3. `09-teoria-analise-bivariada.md` — a teoria de bivariada, com as armadilhas mais cobradas
 4. `12-casos-e-leitura-critica.md` — os casos vistos em aula e o olhar crítico sobre gráficos
 5. `13-lista-de-revisao-resolvida.md` — as 14 questões de revisão com o roteiro de cada uma
 6. `07-prova-2025-resolvida.md` — a prova do ano passado, resolvida e comentada
+7. `15-catalogo-das-bases.md` — todas as bases perfiladas (leia pelo menos o alerta do topo)
 
 **Para a prova (deixe aberto):**
 
@@ -35,7 +37,8 @@ Baseado nas aulas práticas do [repositório oficial da matéria](https://github
 ### Teoria (o "porquê")
 | Arquivo | Conteúdo |
 |---|---|
-| `11-conceitos-fundamentais.md` | Unidade de análise, população vs amostra, representatividade e viés, distribuição de frequência, variável explicativa vs resposta, resistência de medidas, como descrever uma distribuição |
+| `16-checklist-de-conceitos.md` | **A lista de conceitos da professora**, recuperada do `Revisão Conceitos.docx` que ela deletou do repositório. É o escopo oficial da prova, com o mapa de onde cada item está coberto aqui |
+| `11-conceitos-fundamentais.md` | Unidade de análise, população vs amostra, representatividade e viés, distribuição de frequência, variável explicativa vs resposta, resistência de medidas, como descrever uma distribuição, indicadores |
 | `01-tipos-de-variaveis.md` | Qualitativa (nominal/ordinal) vs quantitativa (discreta/contínua) e por que isso define tudo |
 | `09-teoria-analise-bivariada.md` | O que cada técnica de bivariada significa; correlação ≠ causalidade; Pearson só mede relação linear; sensibilidade a atípicos; como estruturar a resposta escrita |
 | `12-casos-e-leitura-critica.md` | Shipman, bebês de Bristol, parceiros sexuais, Datasaurus — o que cada caso ensina + enquadramento positivo/negativo, manipulação de escala de eixo, checklist de leitura crítica |
@@ -55,7 +58,8 @@ Baseado nas aulas práticas do [repositório oficial da matéria](https://github
 | Arquivo | Conteúdo |
 |---|---|
 | `07-prova-2025-resolvida.md` | Prova A1 de 2025.2 (ENEM, série do INMET, PNAD/Censo) com gabarito comentado |
-| `13-lista-de-revisao-resolvida.md` | As 14 questões da Aula 15 com o roteiro de ataque de cada uma + o que elas revelam sobre o formato da prova |
+| `13-lista-de-revisao-resolvida.md` | As 14 questões da Aula 15 com o roteiro de ataque de cada uma, **com todos os números conferidos rodando as bases** + o que elas revelam sobre o formato da prova |
+| `15-catalogo-das-bases.md` | **Todas as bases da matéria perfiladas**: nomes exatos de coluna, tamanho, tipos, armadilhas e respostas conferidas. Inclui o alerta de que as bases da revisão ≠ bases das aulas |
 | `08-frases-de-interpretacao.md` | Banco de frases prontas para interpretar cada tipo de resultado |
 
 ### Ferramentas (sem IA, rodam offline)

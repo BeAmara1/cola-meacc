@@ -34,6 +34,48 @@ from statistics import mean, median, stdev
 mean(lista); median(lista); stdev(lista)
 ```
 
+## As três medidas de dispersão baseadas na média
+
+A professora cobra as três com "definição, exemplos, interpretação e **propriedades**" — então não basta calcular.
+
+Todas partem do mesmo lugar: **o quanto cada observação se afasta da média** (o "desvio" de cada ponto, `xᵢ − x̄`). A diferença é o que se faz com esses desvios — e a razão de existirem três é que a soma simples dos desvios **sempre dá zero** (os positivos cancelam os negativos), então é preciso eliminar o sinal de algum jeito.
+
+| Medida | Como elimina o sinal | Unidade | Fórmula |
+|---|---|---|---|
+| **Desvio médio** | valor absoluto | mesma dos dados | média de \|xᵢ − x̄\| |
+| **Variância** (s²) | elevando ao quadrado | **ao quadrado** (ex: reais²) | soma de (xᵢ − x̄)² ÷ (n−1) |
+| **Desvio padrão** (s) | raiz da variância | mesma dos dados | √s² |
+
+```python
+s = df['coluna']
+
+desvio_medio = (s - s.mean()).abs().mean()   # ⚠️ .mad() NÃO existe mais no pandas
+variancia = s.var()                          # padrão: divide por (n-1)
+variancia_pop = s.var(ddof=0)                # se quiser dividir por n
+desvio_padrao = s.std()                      # = raiz quadrada de s.var()
+```
+
+**Por que o desvio padrão é o mais usado**, se o desvio médio é mais intuitivo? Porque ele volta à **unidade original** dos dados (diferente da variância, que fica em unidade ao quadrado e por isso é difícil de interpretar sozinha) e tem propriedades matemáticas melhores que o desvio médio.
+
+### Propriedades do desvio padrão (isso cai)
+
+1. **s ≥ 0 sempre.** Nunca é negativo.
+2. **s = 0 apenas quando todos os valores são iguais** (não há dispersão nenhuma).
+3. **Tem a mesma unidade dos dados** — se a renda está em reais, s está em reais. (A variância está em reais², por isso não se interpreta diretamente.)
+4. **Não é resistente**: como é calculado a partir da média, um único valor atípico infla bastante s.
+5. **Somar uma constante a todos os valores não muda s** (a dispersão é a mesma, tudo só "andou" junto). Já a **média muda**.
+6. **Multiplicar todos os valores por uma constante multiplica s pela mesma constante** (mudar de reais para centavos multiplica o desvio padrão por 100).
+7. Faz sentido como resumo principalmente em distribuições **aproximadamente simétricas** — em distribuição assimétrica ou com atípico, prefira **mediana + AIQ**.
+
+### Qual par de medidas usar
+
+| Distribuição | Centro | Dispersão |
+|---|---|---|
+| Aproximadamente simétrica, sem atípicos | **média** | **desvio padrão** |
+| Assimétrica ou com valores atípicos | **mediana** | **AIQ** (resumo dos 5 números) |
+
+> **Frase-modelo:** "Como a distribuição é assimétrica à direita e apresenta valor atípico, a mediana ([valor]) e a amplitude interquartil ([valor]) descrevem melhor o centro e a dispersão do que média e desvio padrão, que não são resistentes a valores extremos."
+
 ## Regra do valor atípico (1.5 × AIQ)
 
 ```python
