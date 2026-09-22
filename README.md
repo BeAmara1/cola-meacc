@@ -25,6 +25,7 @@ Baseado nas aulas práticas do [repositório oficial da matéria](https://github
 | `07-prova-2025-resolvida.md` | Prova A1 de 2025.2 com gabarito completo (questões 1 a 3) |
 | `08-frases-de-interpretacao.md` | Banco de frases para interpretar resultados (a professora sempre pede interpretação) |
 | `09-teoria-analise-bivariada.md` | **Teoria** por trás da análise bivariada — o que cada técnica realmente significa, armadilhas (causalidade, não-linearidade, atípicos), e como estruturar a resposta escrita. Leia esse **antes** da prova se bivariada é seu ponto fraco. |
+| `10-corretor-de-codigo-altair.py` + `10-como-usar-o-corretor.md` | **Ferramenta sem IA** (só regras) pra rodar no Colab durante a prova: pega seu código Altair que não funciona, roda de verdade, e diagnostica o erro — parêntese faltando, typo, coluna que não existe na base — tentando autocorrigir os casos bobos. |
 
 ## Se a teoria (não só o código) é seu ponto fraco
 
