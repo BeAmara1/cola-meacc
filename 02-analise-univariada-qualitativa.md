@@ -17,12 +17,26 @@ df['coluna'].value_counts(normalize=True) * 100   # percentual
 ## Checar consistência de dados percentuais (devem somar 100%)
 
 ```python
-df.Percent.sum()
+df.Percent.sum()   # tem que dar 100 (ou bem perto)
+```
 
-# se faltar categoria (ex: "outras"), some a diferença:
+Se **não** der 100, são dois casos possíveis:
+
+**Caso 1 — falta uma categoria "Outras"** (a tabela só traz as principais). Some a diferença numa linha nova:
+
+```python
+# jeito curto: só funciona se o df tiver EXATAMENTE essas 2 colunas, na ordem
 df.loc[len(df)] = ['Outras', 100 - df.Percent.sum()]
 
-# se for erro de arredondamento, corrija a maior/menor categoria:
+# jeito seguro (funciona com qualquer número de colunas):
+nova = pd.DataFrame([{'Field of Study': 'Outras', 'Percent': 100 - df.Percent.sum()}])
+df = pd.concat([df, nova], ignore_index=True)
+```
+
+**Caso 2 — erro de arredondamento** (soma dá 99,9 ou 100,1). Ajuste na categoria maior:
+
+```python
+i = df.Percent.idxmax()
 df.loc[i, 'Percent'] = df.loc[i, 'Percent'] + (100 - df.Percent.sum())
 ```
 

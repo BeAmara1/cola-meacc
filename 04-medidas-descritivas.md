@@ -67,17 +67,20 @@ alt.Chart(df).mark_boxplot(extent=1.5).encode(
 
 ```python
 # 1) transformar em formato "long" com melt
+# CUIDADO: var_name e value_name NÃO podem ter o mesmo nome de uma coluna
+# que já existe no df, senão dá erro ("cannot match an element in the
+# DataFrame columns"). Se der, é só trocar por nomes inventados.
 df_long = df.melt(
     id_vars=['id'],
     value_vars=['grupo_A', 'grupo_B'],
-    var_name='categoria',
-    value_name='valor'
+    var_name='Category',
+    value_name='Value'
 )
 
 # 2) plotar
 alt.Chart(df_long).mark_boxplot(extent=1.5, size=40).encode(
-    alt.X('valor:Q'),
-    alt.Y('categoria:N')
+    alt.X('Value:Q'),
+    alt.Y('Category:N')
 ).properties(height=200, width=600)
 ```
 

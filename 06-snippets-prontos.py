@@ -55,7 +55,12 @@ def grafico_pizza(df, coluna_cat, coluna_valor=None):
 # 4) HISTOGRAMA (univariada quantitativa)
 # =====================================================================
 def histograma(df, coluna, step=None, extent=None):
-    bin_arg = alt.Bin(step=step, extent=extent) if step else True
+    if step and extent:
+        bin_arg = alt.Bin(step=step, extent=extent)
+    elif step:
+        bin_arg = alt.Bin(step=step)   # NÃO passar extent=None: o Altair rejeita
+    else:
+        bin_arg = True
     return alt.Chart(df).mark_bar().encode(
         alt.X(f'{coluna}:Q', bin=bin_arg),
         y='count()'
@@ -99,8 +104,18 @@ def boxplot(df, coluna, destacar_atipicos=True):
         y=f'{coluna}:Q'
     ).properties(width=200)
 
-def boxplot_comparativo(df, id_col, grupos, nome_categoria='categoria', nome_valor='valor'):
-    """grupos: lista de nomes de colunas a comparar lado a lado (ex: ['renda_homem','renda_mulher'])."""
+def boxplot_comparativo(df, id_col, grupos, nome_categoria='Category', nome_valor='Value'):
+    """
+    grupos: lista de nomes de colunas a comparar lado a lado (ex: ['renda_homem','renda_mulher']).
+
+    Os nomes 'Category'/'Value' são propositalmente em inglês e com maiúscula
+    pra não colidir com colunas suas — o melt dá erro se var_name/value_name
+    for igual a uma coluna que já existe no df.
+    """
+    while nome_categoria in df.columns:
+        nome_categoria += '_'
+    while nome_valor in df.columns:
+        nome_valor += '_'
     df_long = df.melt(id_vars=[id_col], value_vars=grupos,
                        var_name=nome_categoria, value_name=nome_valor)
     return alt.Chart(df_long).mark_boxplot(extent=1.5, size=40).encode(
@@ -121,10 +136,25 @@ def grafico_linha(df, coluna_data, coluna_valor, dominio_y=None):
         tooltip=[coluna_data, coluna_valor]
     )
 
-def agregar_por_periodo(df, coluna_data, coluna_valor, periodo='M', agregacao='mean'):
-    """periodo: 'D' dia, 'W' semana, 'M' mês, 'Y' ano."""
+def agregar_por_periodo(df, coluna_data, coluna_valor, periodo='ME', agregacao='mean'):
+    """
+    periodo: 'D' dia, 'W' semana, 'ME' mês, 'YE' ano.
+
+    ATENÇÃO — mudança de versão do pandas: o código antigo (inclusive o
+    gabarito de 2025) usa resample('M') e resample('Y'). No pandas 2.2+
+    isso virou 'ME' e 'YE', e no pandas 3.0 o 'M' antigo dá ERRO:
+    "'M' is no longer supported for offsets. Please use 'ME' instead."
+    Essa função tenta o formato novo e cai pro antigo automaticamente,
+    então funciona em qualquer versão.
+    """
     df_idx = df.set_index(coluna_data)
-    return getattr(df_idx.resample(periodo)[coluna_valor], agregacao)()
+    # tradução nos dois sentidos: funciona se você passar 'ME' ou 'M'
+    equivalente = {'ME': 'M', 'YE': 'Y', 'QE': 'Q', 'M': 'ME', 'Y': 'YE', 'Q': 'QE'}
+    try:
+        return getattr(df_idx.resample(periodo)[coluna_valor], agregacao)()
+    except ValueError:
+        alternativo = equivalente.get(periodo, periodo)
+        return getattr(df_idx.resample(alternativo)[coluna_valor], agregacao)()
 
 # variação percentual entre períodos
 # df['variacao_pct'] = df['valor'].pct_change() * 100

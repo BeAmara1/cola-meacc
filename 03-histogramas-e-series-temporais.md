@@ -69,16 +69,35 @@ alt.Chart(df).mark_line().encode(
 
 ## Agregação por período (resample) — média/soma por mês, ano etc.
 
+> ⚠️ **ATENÇÃO — pegadinha de versão que trava a prova.** O gabarito de 2025 e as aulas usam `resample('M')`. Nas versões atuais do pandas isso mudou: mês virou `'ME'` e ano virou `'YE'`. Se você usar `'M'` e o Colab estiver no pandas 3, dá **erro**: `'M' is no longer supported for offsets. Please use 'ME' instead.` Se der esse erro, é só trocar a letra.
+
+| Período | Escrita atual | Escrita antiga (pandas < 2.2) |
+|---|---|---|
+| dia | `'D'` | `'D'` |
+| semana | `'W'` | `'W'` |
+| mês | `'ME'` | `'M'` |
+| trimestre | `'QE'` | `'Q'` |
+| ano | `'YE'` | `'Y'` |
+
 ```python
 df_idx = df.set_index('data')
 
 # média mensal
-serie_mensal = df_idx.resample('M').valor.mean()   # 'D' dia, 'W' semana, 'M' mês, 'Y' ano
+serie_mensal = df_idx.resample('ME').valor.mean()   # se der erro, tente 'M'
 
 alt.Chart(serie_mensal.reset_index()).mark_line().encode(
     x='data:T',
     y='valor:Q'
 )
+```
+
+Versão à prova de versão (tenta o novo, cai pro antigo sozinha):
+
+```python
+try:
+    serie_mensal = df.set_index('data').resample('ME').valor.mean()
+except ValueError:
+    serie_mensal = df.set_index('data').resample('M').valor.mean()
 ```
 
 ## Taxa de variação percentual entre períodos

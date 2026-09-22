@@ -84,9 +84,12 @@ alt.Chart(clima).mark_line().encode(
 > Comportamento cíclico claro em todas as variáveis (chuva, temperatura, radiação, umidade), com falha de dados em um trecho de 2024. Chuva tem picos entre fev-abr; temperaturas extremas (máx. e mín.) tendem a ocorrer após o meio do ano (~setembro); radiação tem ciclo muito regular; umidade é cíclica mas com uma anomalia batendo 100% no início de 2023.
 
 **Agregação por mês (resample):**
+
+> ⚠️ O gabarito original usa `resample('M')`, que **dá erro nas versões atuais do pandas** — hoje é `'ME'` (mês) e `'YE'` (ano). Copiou daqui e deu `ValueError: 'M' is no longer supported`? Troque por `'ME'`.
+
 ```python
 clima_idx = clima.set_index('DATA (YYYY-MM-DD)')
-clima_mensal = clima_idx.resample('M').temp_max.mean()
+clima_mensal = clima_idx.resample('ME').temp_max.mean()   # no gabarito original: 'M'
 
 alt.Chart(clima_mensal.reset_index()).mark_line().encode(
     x='DATA (YYYY-MM-DD)', y='temp_max:Q'
